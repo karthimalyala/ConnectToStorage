@@ -2,6 +2,11 @@ from flask import Flask, request, jsonify
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import os
 
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+
 app = Flask(__name__)
 
 # Azure Storage Account connection string
@@ -20,7 +25,7 @@ def connect_to_blob_container():
             container_name)
         return container_client
     except Exception as e:
-        print("Error connecting to blob container:", e)
+        logging.info("Error connecting to blob container:", e)
         return None
 
 # API endpoint to upload file to Azure Blob Storage
@@ -46,7 +51,8 @@ def upload_file():
         else:
             return jsonify({"error": "Failed to connect to blob container"}), 500
     except Exception as e:
-        print("Error uploading file:", e)
+        logging.info("Error uploading file:", e)
+       # logging.info("Error uploading file:", e)
         return jsonify({"error": "Failed to upload file"}), 500
 
 
